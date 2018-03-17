@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>configOut</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/plugin/bootstrap/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/custom/signin.css" rel="stylesheet">
+
+    <script src="static/css/plugin/jquery/jquery-3.3.1.min.js"></script>
+    <script src="static/js/custom/api.js"></script>
+    <script src="static/js/custom/signin.js"></script>
+    <script src="static/js/plugin/bootstrap/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <form class="form-signin">
+        <h2 class="form-signin-heading">RTX用户登录</h2>
+        <a class="btn btn-lg btn-primary btn-block" href="#" role="button">Sign
+            in
+        </a>
+    </form>
+    <form class="form-signin">
+        {% if error %}
+            <div class="alert alert-danger alert-dismissible form-signin" role="alert">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Warning!</strong> {{ error }}
+            </div>
+        {% end %}
+    </form>
+
+
+
+</div> <!-- /container -->
+</body>
+<script type="text/javascript">
+    $(function () {
+        signin();
+    })
+</script>
+</html>

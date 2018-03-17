@@ -1,11 +1,11 @@
 ---
 # 数据库相关配置
 db:
-  host: 192.168.1.1
+  host: 192.168.3.1
   port: 3306
   user: root
   passwd: 123456
-  name: tornadojwt
+  name: configout
 
 # 线程池个数
 threadPoolNum: 4
@@ -16,11 +16,11 @@ secretKey: '$p+et+^bgyzg-l%r!^=v(xums)760(u2'
 # token 有效期(小时)
 tokenExp: 24
 
-# test OAuth2
+# ipanel OAuth2
 ipanel:
-  oauth2_id: cc8aaafc564324dc93f50c4111111
-  secret: 8b9926c44d9ba96f609e16a618011111
+  oauth2_id: cc8aaafc56411111111111111111
+  secret: 11111111111
   agent_id: 1
-  code_url: https://cas.test.com/connect/oauth2/authorize
-  access_token_url: https://cas.test.com/connect/oauth2/access_token/get_access_token
-  user_info_url: https://cas.test.com/user/getuserinfo
+  code_url: https://test.com/connect/oauth2/authorize
+  access_token_url: https://test.com/connect/oauth2/access_token/get_access_token
+  user_info_url: https://test.com/user/getuserinfo

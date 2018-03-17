@@ -144,14 +144,32 @@ class UserCode(IpanelOAuth2Mixin, RestfulMixin, RequestHandler):
             json.loads(self.access_token)['access_token'], self.code)
         user_info = json.loads(user_info)
         if not user_info.has_key('user_id'):
-            raise AppException(500, ret_msg=user_info['ret_msg'])
+            # raise AppException(500, ret_msg=user_info['ret_msg'])
+            body = urllib.urlencode({
+                'error': user_info['ret_msg']
+            })
+            self.redirect(
+                'http://' + self.request.host + self.application.reverse_url(
+                    'login') + '?' + body)
 
         token_manager = Token()
         try:
             token = token_manager.entoken(user=user_info['user_id'])
         except TokenException as e:
-            raise AppException(500, ret_msg=e.message)
-        self.jsonify(ret_msg=u'success', token=token)
+            body = urllib.urlencode({
+                'error': e.message
+            })
+            self.redirect(
+                'http://' + self.request.host + self.application.reverse_url(
+                    'login') + '?' + body)
+            # raise AppException(500, ret_msg=e.message)
+            # self.jsonify(ret_msg=u'success', token=token, user=user_info['user_id'])
+        body = urllib.urlencode({
+            'token': token
+        })
+        self.redirect(
+            'http://' + self.request.host + self.application.reverse_url(
+                'index') + '?' + body)
 
 
 class UserLogout(RestfulMixin, RequestHandler):
@@ -159,7 +177,7 @@ class UserLogout(RestfulMixin, RequestHandler):
     def get(self):
         body = urllib.urlencode({
             'oauth2_id': conf['ipanel']['oauth2_id'],
-            'redirect_uri': 'http://' + self.request.host + '/test',
+            'redirect_uri': 'http://' + self.request.host + '/',
             'agentid': conf['ipanel']['agent_id'],
             'state': 'ipanel',
             'response_type': 'code',

@@ -43,8 +43,12 @@ class RestfulMixin(object):
 
     def write_error(self, args=500, **kwargs):
         self.set_status(args)
+        self.access_control_allow()
         excptions = kwargs['exc_info'][1]
-        kwargs = excptions.kwargs
+        try:
+            kwargs = excptions.kwargs
+        except Exception:
+            kwargs = {'ret_msg': 'unknown error'}
         self._write(args, **kwargs)
 
 
@@ -65,21 +69,24 @@ class AuthMixin(object):
 
     @coroutine
     def auth(self):
-        if self.request.method == 'GET':
-            raise Return(False)
-        if not self.request.body:
-            raise AppException(400, ret_msg="no token")
-        body = json.loads(self.request.body)
-        if not body.has_key('token'):
-            raise AppException(400, ret_msg="no token")
-        token = body['token']
+        body = None
+        if not self.get_argument('token', None):
+            raise Return((False, AppException(400, ret_msg="no token")))
+        try:
+            if self.request.body:
+                body = json.loads(self.request.body)
+        except Exception:
+            raise Return((False, AppException(500,
+                                              ret_msg="failed, exception: format error")))
+        token = self.get_argument('token')
         token_manager = Token()
         try:
             data = token_manager.detoken(token)
-        except TokenException as e:
-            raise AppException(500, ret_msg=e.message)
+        except TokenException:
+            raise Return((False, AppException(500, ret_msg=u'token is invalid')))
         self.token_data = data
-        raise Return(True)
+        self.request_body = body
+        raise Return((True, None))
 
 
 class PermissionMixin(Permission):
@@ -102,8 +109,10 @@ class OperationMixin(AuthMixin, SQLMixin, PermissionMixin):
     def prepare(self):
         self.make_session()
         status = yield self.auth()
-        if status:
+        if status[0] and status[1] is not None:
             yield self.check_permission()
+        elif not status[0] and status[1] is not None:
+            raise status[1]
 
     def on_finish(self):
         self.close_session()
@@ -136,6 +145,7 @@ class IpanelOAuth2Mixin(object):
             raise AppException(500,
                                ret_msg=u"ipanel access_token fail, exception： %s"
                                        % (e.message or e.strerror))
+
         raise Return(response.body)
 
     def get_user_code(self):
@@ -143,6 +153,7 @@ class IpanelOAuth2Mixin(object):
             code = self.get_argument('code')
         except Exception:
             raise AppException(500, ret_msg=u"ipanel code fail")
+
         return code
 
     @coroutine
@@ -158,5 +169,6 @@ class IpanelOAuth2Mixin(object):
         except Exception as e:
             raise AppException(500,
                                ret_msg=u'ipanle user info failed， exception： %s' % (
-                               e.message or e.strerror))
+                                   e.message or e.strerror))
+
         raise Return(response.body)

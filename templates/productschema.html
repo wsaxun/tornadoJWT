@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>configOut</title>
+    <script src="static/css/plugin/jquery/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/plugin/bootstrap/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/custom/common.css" rel="stylesheet">
+
+    <script src="static/js/custom/api.js"></script>
+
+    <script src="static/js/plugin/bootstrap/bootstrap.min.js"></script>
+    <script src="static/js/custom/common.js"></script>
+
+</head>
+
+<body>
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">配置管理输出系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="product"><a href="#">产品</a></li>
+                <li class="hardwaretype"><a href="#contact">硬件类型</a></li>
+                <li class="hardware"><a href="#contact">硬件</a></li>
+                <li class="price"><a href="#contact">价格</a></li>
+                <li class="productschema active"><a href="#about">产品方案</a></li>
+                <li class="output"><a href="#contact">配置输出</a></li>
+                <li class="history"><a href="#contact">配置历史</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        {% if user %}
+                            <span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;</span>{{ user }}
+                        {% else %}
+                            <span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;</span>未知用户
+                        {% end %}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="logout"><a href="#">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+
+
+</div> <!-- /container -->
+
+</body>
+<script type="text/javascript">
+    $(function () {
+        get_token();
+        common_init();
+    })
+</script>
+</html>
